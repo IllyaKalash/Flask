@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} vendors {% endblock %}
+{% block content %}
+<table class="table">
+      <thead>
+      <tr>
+      <th scope="col">vend_id</th>
+      <th scope="col">vend_name</th>
+      <th scope="col">vend_address</th>
+      <th scope="col">vend_city</th>
+      <th scope="col">vend_state</th>
+      <th scope="col">vend_zip</th>
+      <th scope="col">vend_country</th>
+      <th scope="col">delete_button</th>
+      </tr>
+      </thead>
+  <tbody>
+  {% for vendor in vendors %}
+    <tr>
+      <td>{{vendor.vend_id}}</td>
+      <td>{{vendor.vend_name}}</td>
+      <td>{{vendor.vend_address}}</td>
+      <td>{{vendor.vend_city}}</td>
+      <td>{{vendor.vend_state}}</td>
+      <td>{{vendor.vend_zip}}</td>
+      <td>{{vendor.vend_country}}</td>
+      <td><a class="btn btn-danger" href="{{ url_for('remove_vendor', vend_id=vendor['vend_id']) }}" role="button">Удалить</a></td>
+      <td><a class="btn btn-success" href="{{ url_for('update_vendor', vend_id=vendor['vend_id']) }}" role="button">Обновить</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-primary" href="{{ url_for('add_vendor') }}" role="button">add vendor</a>
+{% endblock %}

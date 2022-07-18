@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} customers {% endblock %}
+{% block content %}
+<table class="table">
+      <thead>
+      <tr>
+      <th scope="col">cust_id</th>
+      <th scope="col">cust_name</th>
+      <th scope="col">cust_address</th>
+      <th scope="col">cust_state</th>
+      <th scope="col">cust_zip</th>
+      <th scope="col">cust_country</th>
+      <th scope="col">cust_contact</th>
+      <th scope="col">cust_email</th>
+      <th scope="col">cust_city</th>
+      <th scope="col">delete_button</th>
+      </tr>
+      </thead>
+  <tbody>
+  {% for customer in customers %}
+    <tr>
+      <td>{{customer.cust_id}}</td>
+      <td>{{customer.cust_name}}</td>
+      <td>{{customer.cust_address}}</td>
+      <td>{{customer.cust_state}}</td>
+      <td>{{customer.cust_zip}}</td>
+      <td>{{customer.cust_country}}</td>
+      <td>{{customer.cust_contact}}</td>
+      <td>{{customer.cust_email or ""}}</td>
+      <td>{{customer.cust_city}}</td>
+      <td><a class="btn btn-danger" href="{{ url_for('remove_customer', cust_id=customer['cust_id']) }}" role="button">Удалить</a></td>
+      <td><a class="btn btn-success" href="{{ url_for('update_customer', cust_id=customer['cust_id']) }}" role="button">Обновить</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-primary" href="{{ url_for('add_customer') }}" role="button">add customer</a>
+{% endblock %}

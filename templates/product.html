@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} products {% endblock %}
+{% block content %}
+<table class="table">
+      <thead>
+      <tr>
+      <th scope="col">prod_id</th>
+      <th scope="col">vend_id</th>
+      <th scope="col">prod_name</th>
+      <th scope="col">prod_price</th>
+      <th scope="col">prod_desc</th>
+      <th scope="col">delete_buttons</th>
+      </tr>
+      </thead>
+  <tbody>
+  {% for product in products %}
+    <tr>
+      <td>{{product.prod_id}}</td>
+      <td>{{product.vend_id}}</td>
+      <td>{{product.prod_name}}</td>
+      <td>{{product.prod_price}}</td>
+      <td>{{product.prod_desc}}</td>
+      <td><a class="btn btn-danger" href="{{ url_for('remove_product', prod_id=product['prod_id']) }}" role="button">Удалить</a></td>
+      <td><a class="btn btn-success" href="{{ url_for('update_product', prod_id=product['prod_id']) }}" role="button">Обновить</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-primary" href="{{ url_for('add_product') }}" role="button">add product</a>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <title>Add customer</title>
+</head>
+<body>
+  <form method="POST">
+    <label>
+      <input type="text" name="cust_id" {% if vendor is not none %} readonly {% endif %} value="{{ customer.cust_id if customer.cust_id is not none }}">
+    </label>
+    {% if error is not none %}
+    <span>{{ error }}</span>
+    {% endif %}
+
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_name"  required value="{{ customer.cust_name if customer.cust_name is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_address" required value="{{ customer.cust_address if customer.cust_address is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_state" required value="{{ customer.cust_state if customer.cust_state is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_zip" required value="{{ customer.cust_zip if customer.cust_zip is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_country" required value="{{ customer.cust_country if customer.cust_country is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_contact" required value="{{ customer.cust_contact if customer.cust_contact is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_email" required value="{{ customer.cust_email if customer.cust_email is not none }}">
+    </label>
+    <br>
+    <br>
+    <label>
+      <input type="text" name="cust_city" required value="{{ customer.cust_city if customer.cust_city is not none }}">
+    </label>
+
+    <button type="submit">SEND</button>
+  </form>
+</body>
+</html>

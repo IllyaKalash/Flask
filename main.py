@@ -1,8 +1,10 @@
 from peewee import *
-from config import db
 from flask import Flask, render_template, request, redirect, url_for
 
+from config import db
+
 app = Flask(__name__)
+
 
 class BaseModel(Model):
     class Meta:
@@ -78,13 +80,13 @@ def customers():
 @app.route('/orders')
 def orders():
     all_orders = Order.select()
-    return render_template('Order.html', orders=all_orders)
+    return render_template('order.html', orders=all_orders)
 
 
-@app.route('/orderItems')
-def orderItems():
-    all_orderItems = OrderItem.select()
-    return render_template('orderItem.html', orderItems=all_orderItems)
+@app.route('/order_items')
+def order_items():
+    all_order_items = OrderItem.select()
+    return render_template('order_item.html', order_items=all_order_items)
 
 
 @app.route('/products')
@@ -108,7 +110,7 @@ def index():
 def add_product():
     vendors = Vendor.select(Vendor.vend_id, Vendor.vend_name)
     if request.method == "GET":
-        return render_template("add_product.html", vendors=vendors)
+        return render_template("add_product.html", vendors=vendors, product=None)
 
     elif request.method == "POST":
         data = request.form
@@ -127,7 +129,7 @@ def add_product():
 @app.route('/add_vendor', methods=["GET", "POST"])
 def add_vendor():
     if request.method == "GET":
-        return render_template("add_vendor.html")
+        return render_template("add_vendor.html", vendor=None)
 
     elif request.method == "POST":
         data = request.form
@@ -150,7 +152,7 @@ def add_vendor():
 @app.route('/add_customer', methods=["GET", "POST"])
 def add_customer():
     if request.method == "GET":
-        return render_template("add_customer.html", customers=customers)
+        return render_template("add_customer.html", customers=customers, customer=None)
 
     elif request.method == "POST":
         data = request.form
@@ -179,14 +181,16 @@ def add_order_item():
     orders = Order.select(Order.order_id)
     products = Product.select(Product.prod_id, Product.prod_name)
     if request.method == "GET":
-        return render_template("add_order_item.html", orders=orders, products=products)
+        return render_template("add_order_item.html", orders=orders, products=products, order_item=None)
 
     elif request.method == "POST":
         data = request.form
 
-        orderItem = OrderItem.select().where((OrderItem.order_id == data["order_id"]) & (OrderItem.order_item == data["order_item"])).get_or_none()
-        if orderItem is not None:
-            return render_template("add_order_item.html", error="this primary key already exist", orders=orders, products=products)
+        order_item = OrderItem.select().where((OrderItem.order_id == data["order_id"]) &
+                                              (OrderItem.order_item == data["order_item"])).get_or_none()
+        if order_item is not None:
+            return render_template("add_order_item.html", error="this primary key already exist", orders=orders,
+                                   products=products)
 
         OrderItem.create(
             order_id=data["order_id"],
@@ -196,7 +200,7 @@ def add_order_item():
             item_price=data["item_price"],
         )
 
-        return redirect(url_for('orderItems'))
+        return redirect(url_for('order_items'))
 
 
 @app.route('/add_order', methods=["GET", "POST"])
@@ -253,12 +257,12 @@ def remove_order(order_id):
     return redirect(url_for('orders'))
 
 
-@app.route('/remove_orderItem/<order_item>/<order_id>')
-def remove_orderItem(order_item, order_id):
-    orderItem = OrderItem.get((OrderItem.order_item == order_item) & (OrderItem.order_id == order_id))
-    orderItem.delete_instance()
+@app.route('/remove_order_item/<order_item>/<order_id>')
+def remove_order_item(order_item, order_id):
+    order_item = OrderItem.get((OrderItem.order_item == order_item) & (OrderItem.order_id == order_id))
+    order_item.delete_instance()
 
-    return redirect(url_for('orderItems'))
+    return redirect(url_for('order_items'))
 
 
 @app.route('/update_product/<prod_id>', methods=["GET", "POST"])
@@ -354,25 +358,28 @@ def update_order(order_id):
 @app.route('/update_order_item/<order_item>/<order_id>', methods=["GET", "POST"])
 def update_order_item(order_item, order_id):
     if request.method == "GET":
-        orderItem = OrderItem.select().where((OrderItem.order_item == order_item) & (OrderItem.order_id == order_id)).first()
+        current_order_item = OrderItem.select().where((OrderItem.order_item == order_item) &
+                                                      (OrderItem.order_id == order_id)).first()
         orders = Order.select(Order.order_id)
         products = Product.select(Product.prod_id, Product.prod_name)
-        return render_template("add_order_item.html", orderItem=orderItem, orders=orders, products=products)
+        return render_template("add_order_item.html", order_item=current_order_item, orders=orders, products=products)
 
     elif request.method == "POST":
         data = request.form
 
-        orderItem = OrderItem.select().where((OrderItem.order_item == data["order_item"]) & (OrderItem.order_id == data["order_id"])).first()
+        order_item = OrderItem.select().where((OrderItem.order_item == data["order_item"]) &
+                                              (OrderItem.order_id == data["order_id"])).first()
 
-        orderItem.order_id = data["order_id"]
-        orderItem.order_item = data["order_item"]
-        orderItem.prod_id = data["prod_id"]
-        orderItem.quantity = data["quantity"]
-        orderItem.item_price = data["item_price"]
+        order_item.order_id = data["order_id"]
+        order_item.order_item = data["order_item"]
+        order_item.prod_id = data["prod_id"]
+        order_item.quantity = data["quantity"]
+        order_item.item_price = data["item_price"]
 
-        orderItem.save()
+        order_item.save()
 
-        return redirect(url_for('orderItems'))
+        return redirect(url_for('order_items'))
+
 
 if __name__ == "__main__":
     app.run()

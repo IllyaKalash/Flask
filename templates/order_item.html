@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} orderItems {% endblock %}
+{% block content %}
+<table class="table">
+      <thead>
+      <tr>
+      <th scope="col">order_id</th>
+      <th scope="col">order_item</th>
+      <th scope="col">prod_id</th>
+      <th scope="col">quantity</th>
+      <th scope="col">item_price</th>
+      <th scope="col">delete_button</th>
+      </tr>
+      </thead>
+  <tbody>
+  {% for order_item in orderItems %}
+    <tr>
+      <td>{{order_item.order_id}}</td>
+      <td>{{order_item.order_item}}</td>
+      <td>{{order_item.prod_id}}</td>
+      <td>{{order_item.quantity}}</td>
+      <td>{{order_item.item_price}}</td>
+      <td><a class="btn btn-danger" href="{{ url_for('remove_orderItem', order_item=order_item['order_item'], order_id=order_item['order_id']) }}" role="button">Удалить</a></td>
+      <td><a class="btn btn-success" href="{{ url_for('update_order_item', order_item=order_item['order_item'], order_id=order_item['order_id']) }}" role="button">Обновить</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-primary" href="{{ url_for('add_order_item') }}" role="button">add order item</a>
+{% endblock %}

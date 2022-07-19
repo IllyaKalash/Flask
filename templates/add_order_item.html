@@ -10,7 +10,7 @@
     <label>
       <select name="order_id">
         {% for order in orders%}
-          <option value="{{ order.order_id }}" {% if order is not none and orderItem.order_id.order_id == order.order_id %} selected="selected" {% endif %}>{{ order.order_id}}</option>
+          <option value="{{ order.order_id }}" {% if order_item is not none and order_item.order_id.order_id == order.order_id %} selected="selected" {% endif %}>{{ order.order_id}}</option>
         {% endfor %}}
       </select>
     </label>
@@ -20,7 +20,7 @@
     <br>
     <br>
     <label>
-      <input type="text" name="order_item" {% if orderItem is not none %} readonly {% endif %} value="{{ orderItem.order_item if orderItem.order_item is not none }}">
+      <input type="text" name="order_item" {% if orderItem is not none %} readonly {% endif %} value="{{ order_item.order_item if order_item.order_item is not none }}">
     </label>
     {% if error is not none %}
     <span>{{ error }}</span>
@@ -30,19 +30,19 @@
     <label>
       <select name="prod_id">
         {% for product in products%}
-          <option value="{{ product.prod_id }}" {% if product is not none and orderItem.prod_id.prod_id == product.prod_id %} selected="selected" {% endif %}>{{ product.prod_id}}</option>
+          <option value="{{ product.prod_id }}" {% if order_item is not none and order_item.prod_id.prod_id == product.prod_id %} selected="selected" {% endif %}>{{ product.prod_id}}</option>
         {% endfor %}}
       </select>
     </label>
     <br>
     <br>
     <label>
-      <input type="text" name="quantity" value="{{ orderItem.quantity if orderItem.quantity is not none }}">
+      <input type="text" name="quantity" value="{{ order_item.quantity if order_item.quantity is not none }}">
     </label>
     <br>
     <br>
     <label>
-      <input type="text" name="item_price" value="{{ orderItem.item_price if orderItem.item_price is not none }}">
+      <input type="text" name="item_price" value="{{ order_item.item_price if order_item.item_price is not none }}">
     </label>
 
     <button type="submit">SEND</button>
